@@ -104,6 +104,9 @@
     	<if test="updateDateStart != null  and updateDateEnd != null ">
     		AND a.update_date BETWEEN #{updateDateStart} AND #{updateDateEnd}
     	</if>
+		<if test="payTimeStart != null and payTimeEnd != null ">
+			AND TO_DAYS(a.pay_time) BETWEEN TO_DAYS(#{payTimeStart}) AND TO_DAYS(#{payTimeEnd})
+		</if>
     </sql>
     
     <insert id="insert">

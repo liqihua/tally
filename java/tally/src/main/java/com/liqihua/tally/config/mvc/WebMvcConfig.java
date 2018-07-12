@@ -2,6 +2,7 @@ package com.liqihua.tally.config.mvc;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.liqihua.tally.config.mvc.interceptor.CorsInterceptor;
+import com.liqihua.tally.config.mvc.interceptor.LoginInterceptor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.MediaType;
@@ -10,6 +11,7 @@ import org.springframework.http.converter.json.MappingJackson2HttpMessageConvert
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupport;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -27,6 +29,11 @@ public class WebMvcConfig extends WebMvcConfigurationSupport {
 		return new CorsInterceptor();
 	}
 
+	@Bean
+	LoginInterceptor loginInterceptor(){
+		return new LoginInterceptor();
+	}
+
 	/**
 	 * 添加拦截器
 	 * @param registry
@@ -35,18 +42,14 @@ public class WebMvcConfig extends WebMvcConfigurationSupport {
 	public void addInterceptors(InterceptorRegistry registry) {
 		//跨域拦截器
 		registry.addInterceptor(corsInterceptor()).addPathPatterns(corsArr);
+		//登录校验拦截器
+		registry.addInterceptor(loginInterceptor()).addPathPatterns("/api/logPayApiController/**");
+		//registry.addInterceptor(loginInterceptor()).addPathPatterns("/**").excludePathPatterns("/api_doc/**","/api/loginApiController/**","/api/testApiController/**");
 		super.addInterceptors(registry);
 	}
 
 
-	/**
-	 * 静态路径映射
-	 * 继承WebMvcConfigurationSupport时需要配置
-	 */
-	@Override
-	protected void addResourceHandlers(ResourceHandlerRegistry registry) {
-		registry.addResourceHandler("/**").addResourceLocations("classpath:/static/");
-	}
+
 
 
 
@@ -86,6 +89,16 @@ public class WebMvcConfig extends WebMvcConfigurationSupport {
 
 		converters.add(converter);
 		super.configureMessageConverters(converters);
+	}
+
+
+	/**
+	 * 静态路径映射
+	 * 继承WebMvcConfigurationSupport时需要配置
+	 */
+	@Override
+	protected void addResourceHandlers(ResourceHandlerRegistry registry) {
+		registry.addResourceHandler("/**").addResourceLocations("classpath:/static/");
 	}
 
 

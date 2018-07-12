@@ -1,15 +1,40 @@
 package com.liqihua.core.utils;
 
+import cn.hutool.core.util.StrUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.util.ClassUtils;
+
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * @author liqihua
  * @since 2018/6/20
  */
 public class Tool {
+
+
+    /**
+     * 从request中获取cookie的值
+     * @param request
+     * @param name
+     * @return
+     */
+    public static String getValueFromCookie(HttpServletRequest request, String name){
+        if(request != null && StrUtil.isNotBlank(name)){
+            Cookie[] arr = request.getCookies();
+            if(arr != null && arr.length > 0){
+                for(Cookie c : arr){
+                    if(name.equals(c.getName())){
+                        return c.getValue();
+                    }
+                }
+            }
+        }
+        return null;
+    }
 
 
     /**

@@ -14,7 +14,7 @@ import java.util.Map;
 
 public interface IBaseService<T> {
 
-    public T get(String id);
+    public T get(Long id);
 
     public T getForUpdate(String id);
 
@@ -36,6 +36,6 @@ public interface IBaseService<T> {
 
     public int getCount(T entity);
 
-    public SysPage<T> findPage(T entity, HttpServletRequest request);
+    public SysPage<T> findPage(T entity);
 
 }

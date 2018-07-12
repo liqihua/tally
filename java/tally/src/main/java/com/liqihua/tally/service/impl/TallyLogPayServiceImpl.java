@@ -18,7 +18,8 @@ import java.util.List;
 @Transactional(readOnly = true,propagation = Propagation.REQUIRED,rollbackFor = Exception.class)
 public class TallyLogPayServiceImpl extends BaseServiceImpl<TallyLogPayDao,TallyLogPay> implements TallyLogPayService {
 
-	public DTOLogPay getReturnLogPay(TallyLogPay entity){
+	@Override
+	public DTOLogPay getDTO(TallyLogPay entity){
 		DTOLogPay logpay = new DTOLogPay();
 		if(entity != null){
 			try{
@@ -31,11 +32,12 @@ public class TallyLogPayServiceImpl extends BaseServiceImpl<TallyLogPayDao,Tally
 	}
 
 
-	public List<DTOLogPay> getReturnLogPayList(List<TallyLogPay> entityList){
+	@Override
+	public List<DTOLogPay> getDTOList(List<TallyLogPay> entityList){
     	List<DTOLogPay> list = new ArrayList<DTOLogPay>();
         if(entityList != null && entityList.size()>0){
         	for(TallyLogPay entity : entityList){
-        		list.add(getReturnLogPay(entity));
+        		list.add(getDTO(entity));
         	}
         }
         return list;

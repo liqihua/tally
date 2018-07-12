@@ -25,7 +25,7 @@ public class BaseServiceImpl<D extends BaseDao<T>,T extends BaseEntity> implemen
     protected D dao;
 
     @Override
-    public T get(String id) {
+    public T get(Long id) {
         return dao.get(id);
     }
 
@@ -97,7 +97,7 @@ public class BaseServiceImpl<D extends BaseDao<T>,T extends BaseEntity> implemen
     }
 
     @Override
-    public SysPage<T> findPage(T entity, HttpServletRequest request) {
+    public SysPage<T> findPage(T entity) {
         SysPage<T> sysPage = new SysPage<T>();
         if(entity.getFirst() == null){
             entity.setFirst(0);
@@ -132,7 +132,7 @@ public class BaseServiceImpl<D extends BaseDao<T>,T extends BaseEntity> implemen
         }
         sysPage.setList(list);
         sysPage.setCount(count);
-        sysPage.setUrl(request.getContextPath() + request.getServletPath());
+        //sysPage.setUrl(request.getContextPath() + request.getServletPath());
         return sysPage;
     }
 }

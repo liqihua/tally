@@ -22,7 +22,9 @@ import com.liqihua.tally.service.TallyUserService;
 @Transactional(readOnly = true,propagation = Propagation.REQUIRED,rollbackFor = Exception.class)
 public class TallyUserServiceImpl extends BaseServiceImpl<TallyUserDao,TallyUser> implements TallyUserService {
 
-	public DTOUser getReturnUser(TallyUser entity){
+
+	@Override
+	public DTOUser getDTO(TallyUser entity) {
 		DTOUser user = new DTOUser();
 		if(entity != null){
 			try{
@@ -34,15 +36,16 @@ public class TallyUserServiceImpl extends BaseServiceImpl<TallyUserDao,TallyUser
 		return user;
 	}
 
+	@Override
+	public List<DTOUser> getDTOList(List<TallyUser> entityList) {
+		List<DTOUser> list = new ArrayList<DTOUser>();
+		if(entityList != null && entityList.size()>0){
+			for(TallyUser entity : entityList){
+				list.add(getDTO(entity));
+			}
+		}
+		return list;
+	}
 
-	public List<DTOUser> getReturnUserList(List<TallyUser> entityList){
-    	List<DTOUser> list = new ArrayList<DTOUser>();
-        if(entityList != null && entityList.size()>0){
-        	for(TallyUser entity : entityList){
-        		list.add(getReturnUser(entity));
-        	}
-        }
-        return list;
-    }
 
 }

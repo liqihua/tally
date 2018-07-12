@@ -14,12 +14,24 @@ public class TallyLogPay extends BaseEntity {
 	private String productName;	//商品名称
 	private String productType;	//商品类型
 	private Date payTime;	//消费时间
-	
+
+
+    //查询条件
+    public Date payTimeStart;
+    public Date payTimeEnd;
+
 	public TallyLogPay() {
 		super();
 	}
-	
-    
+
+    public TallyLogPay(Long userId, Long total, String productName, String productType, Date payTime) {
+        this.userId = userId;
+        this.total = total;
+        this.productName = productName;
+        this.productType = productType;
+        this.payTime = payTime;
+    }
+
     public Long getUserId() {
     	return userId;
     }
