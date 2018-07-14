@@ -12,6 +12,7 @@
 
 
 <script>
+  import config from '@/config/config'
   import axios from 'axios';
   export default {
     name: 'sys_header',
@@ -40,7 +41,7 @@
         if(this.payTime == null || this.payTime == ''){
           alert("消费时间不能为空");return;
         }
-        axios.post("http://localhost:9003/api/logPayApiController/saveLogPay",{
+        axios.post(API.SAVE_LOG_PAY,{
           total:this.total,
           productName:this.productName,
           productType:this.productType,

@@ -4,12 +4,14 @@
     <div class="sys-login-input">
       <el-input v-model="username" type="text" placeholder="账号"></el-input>
       <el-input v-model="password" type="password" placeholder="密码"></el-input>
-      <el-button type="primary">登录</el-button>
+      <el-button type="primary" @click="login()">登录</el-button>
     </div>
   </div>
 </template>
 
 <script>
+import config from '@/config/config';
+import sha from '@/js/sha/sha';
 import axios from 'axios';
 export default {
   name: 'login',
@@ -20,7 +22,22 @@ export default {
     }
   },
   methods: {
-
+    login(){
+      if(this.username != null && this.username != '' && this.password != null && this.password != ''){
+        var pwd = this.password;
+        var shaObj = new jsSHA("SHA-1", "TEXT");
+        shaObj.update(pwd);
+        pwd = shaObj.getHash("HEX");
+        axios.post(API.LOGIN,{
+          username : this.username,
+          password : pwd
+        }).then(function (res) {
+          console.log(res);
+        }).catch(function (res) {
+          console.log(res);
+        })
+      }
+    }
   }
 }
 </script>
