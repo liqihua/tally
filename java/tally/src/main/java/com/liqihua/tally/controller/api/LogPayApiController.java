@@ -19,6 +19,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpServletRequest;
+import java.text.ParseException;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -40,16 +42,13 @@ public class LogPayApiController extends BaseController {
     @ApiOperation(value = "保存记录")
     @RequestMapping(value = "/saveLogPay", method = RequestMethod.POST)
     @ApiResponses({@ApiResponse(code = ApiConstance.BASE_SUCCESS_CODE, message = "成功", response = String.class)})
-    public ResponseEntity<BaseResult> saveLogPay(HttpServletRequest request,
-                                                @ApiParam(value = "logId",required = false) @RequestParam(value="logId",required=false) Long logId,
+    public ResponseEntity<BaseResult> saveLogPay(@ApiParam(value = "logId",required = false) @RequestParam(value="logId",required=false) Long logId,
+                                                @ApiParam(value = "userId",required = true) @RequestParam(value="userId",required=true) Long _userId,
                                                 @ApiParam(value = "total",required = true) @RequestParam(value="total",required=true) Long total,
                                                 @ApiParam(value = "productName",required = true) @RequestParam(value="productName",required=true) String productName,
                                                 @ApiParam(value = "productType",required = true) @RequestParam(value="productType",required=true) String productType,
                                                 @ApiParam(value = "payTime：yyyy-MM-dd",required = true) @RequestParam(value="payTime",required=true) String payTime){
-        String _userId = Tool.getValueFromCookie(request,"userId");
-        if(Tool.isBlank(_userId)){
-            return buildFailedInfo(ApiConstance.NO_LOGIN);
-        }
+
         Long userId = Long.valueOf(_userId);
         TallyLogPay logPay = null;
         if(logId != null){
@@ -58,7 +57,13 @@ public class LogPayApiController extends BaseController {
                 return buildFailedInfo(ApiConstance.LOG_NOT_EXIST);
             }
         }else{
-            logPay = new TallyLogPay(userId,total,productName,productType, DateUtil.parse(payTime));
+            Date date = null;
+            try {
+                date = DateUtil.parse(payTime);
+            }catch(Exception e){
+                return buildFailedInfo(ApiConstance.PARAM_DATE_ERROR);
+            }
+            logPay = new TallyLogPay(userId, total, productName, productType, date);
         }
         logPayService.save(logPay);
         DTOLogPay dto = logPayService.getDTO(logPay);
@@ -84,13 +89,16 @@ public class LogPayApiController extends BaseController {
     @ApiOperation(value = "查询记录列表")
     @RequestMapping(value = "/findPayLogList", method = RequestMethod.GET)
     @ApiResponses({@ApiResponse(code = ApiConstance.BASE_SUCCESS_CODE, message = "成功", response = String.class)})
-    public ResponseEntity<BaseResult> findPayLogList(@ApiParam(value = "page",required = true) @RequestParam(value="page",required=true) Integer page,
+    public ResponseEntity<BaseResult> findPayLogList(@ApiParam(value = "userId",required = true) @RequestParam(value="userId",required=true) Long _userId,
+                                                     @ApiParam(value = "page",required = true) @RequestParam(value="page",required=true) Integer page,
                                                      @ApiParam(value = "pageSize",required = true) @RequestParam(value="pageSize",required=true) Integer pageSize,
-                                                     @ApiParam(value = "productName",required = true) @RequestParam(value="productName",required=true) String productName,
-                                                     @ApiParam(value = "productType",required = true) @RequestParam(value="productType",required=true) String productType,
-                                                     @ApiParam(value = "payTimeStart：yyyy-MM-dd",required = true) @RequestParam(value="payTimeStart",required=true) String payTimeStart,
-                                                     @ApiParam(value = "payTimeEnd：yyyy-MM-dd",required = true) @RequestParam(value="payTimeEnd",required=true) String payTimeEnd){
+                                                     @ApiParam(value = "productName",required = false) @RequestParam(value="productName",required=false) String productName,
+                                                     @ApiParam(value = "productType",required = false) @RequestParam(value="productType",required=false) String productType,
+                                                     @ApiParam(value = "payTimeStart：yyyy-MM-dd",required = false) @RequestParam(value="payTimeStart",required=false) String payTimeStart,
+                                                     @ApiParam(value = "payTimeEnd：yyyy-MM-dd",required = false) @RequestParam(value="payTimeEnd",required=false) String payTimeEnd){
+        Long userId = Long.valueOf(_userId);
         TallyLogPay _log = new TallyLogPay();
+        _log.setUserId(userId);
         _log.setProductName(productName);
         _log.setProductType(productType);
         _log.payTimeStart = DateUtil.parse(payTimeStart);

@@ -43,14 +43,19 @@
 
 
 <script>
+  import API from '@/config/config';
+  import axios from 'axios';
+
   export default {
     name: 'address_list',
     data() {
       return {
+        page:0,
+        pageSize:10,
         payTime:'',
         centerDialogVisible: false,
         tableData: [
-          {
+          /*{
             total: 8.72,
             productName: '酸奶',
             productType: '早餐',
@@ -73,10 +78,44 @@
             productName: '酸奶',
             productType: '早餐',
             payTime: '2018-07-09'
-          },
+          },*/
         ]
 
       }
+    },
+    created:function(){
+      console.log("--- created");
+      var userId = localStorage.getItem("userId");
+      var token = localStorage.getItem("token");
+      if(userId == null || userId == '' || token == null || token == ''){
+        location.href = "/";
+      }
+      var that = this;
+      axios({
+        method: 'get',
+        url: API.GET_LOG_LIST+"?userId="+userId+"&token="+token+"&page="+this.page+"&pageSize="+this.pageSize,
+      }).then(function (res) {
+        console.log(res);
+        that.loading = false;
+        if(res.data.resultCode == 10000){
+          for(var i=0;i<res.data.resultData.list.length;i++){
+            res.data.resultData.list[i].payTime = res.data.resultData.list[i].payTime.substring(0,10);
+          }
+          that.tableData = res.data.resultData.list;
+        }else{
+          if(res.data.resultCode == 42003){
+            location.href = "/";
+          }
+          that.$message.error({
+            message: res.data.resultMessage,
+            center: true
+          });
+        }
+      }).catch(function (res) {
+        console.log(res);
+        that.loading = false;
+      });
+
     }
   }
 </script>

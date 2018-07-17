@@ -14,11 +14,18 @@ public class DTOUser implements Serializable{
 	public Long id;
 	@ApiModelProperty("账号")
 	public String username;
-	
-	
-    
+	@ApiModelProperty("token")
+	public String token;
 
-    public Long getId() {
+	public String getToken() {
+		return token;
+	}
+
+	public void setToken(String token) {
+		this.token = token;
+	}
+
+	public Long getId() {
     	return id;
     }
     public void setId(Long id) {

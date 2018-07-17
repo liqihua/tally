@@ -3,6 +3,7 @@ package com.liqihua.tally.config.mvc.interceptor;
 import com.liqihua.core.basic.result.BaseResult;
 import com.liqihua.core.constance.ApiConstance;
 import com.liqihua.core.utils.Tool;
+import com.liqihua.tally.commons.redis.RedisUtil;
 import com.liqihua.tally.commons.security.SysSecurity;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,27 +20,18 @@ import javax.servlet.http.HttpServletResponse;
 public class LoginInterceptor extends HandlerInterceptorAdapter {
     @Autowired
     private SysSecurity sysSecurity;
+    @Autowired
+    private RedisUtil redisUtil;
 
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-        Cookie[] arr = request.getCookies();
-        if(arr != null && arr.length > 0){
-            String username = null;
-            String token = null;
-            for(Cookie cookie : arr){
-                if("username".equals(cookie.getName())){
-                    username = cookie.getValue();
-                }
-                if("token".equals(cookie.getName())){
-                    token = cookie.getValue();
-                }
-            }
-            if(Tool.isNotBlank(username,token)){
-                token = sysSecurity.decode(token);
-                if(username.equals(token)){
-                    return true;
-                }
+        String token = request.getParameter("token");
+        if(Tool.isNotBlank(token)){
+            String userId = request.getParameter("userId");
+            String cacheToken = (String) redisUtil.get("token_"+userId);
+            if(Tool.isNotBlank(cacheToken) && token.equals(cacheToken)){
+                return true;
             }
         }
         BaseResult result = new BaseResult(ApiConstance.NO_LOGIN, ApiConstance.getMessage(ApiConstance.NO_LOGIN), null);

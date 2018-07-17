@@ -1,5 +1,5 @@
 <template>
-  <div class="sys-login">
+  <div class="sys-login" v-loading.fullscreen.lock="loading">
     <div class="sys-login-title">tally</div>
     <div class="sys-login-input">
       <el-input v-model="username" type="text" placeholder="账号"></el-input>
@@ -10,15 +10,17 @@
 </template>
 
 <script>
-import config from '@/config/config';
-import sha from '@/js/sha/sha';
+import API from '@/config/config';
 import axios from 'axios';
+const jsSHA = require("jssha");
+
 export default {
   name: 'login',
   data () {
     return {
-      username:'',
-      password:''
+      loading : false,
+      username : '',
+      password : ''
     }
   },
   methods: {
@@ -28,14 +30,32 @@ export default {
         var shaObj = new jsSHA("SHA-1", "TEXT");
         shaObj.update(pwd);
         pwd = shaObj.getHash("HEX");
-        axios.post(API.LOGIN,{
-          username : this.username,
-          password : pwd
+        var that = this;
+        that.loading = true;
+        axios({
+          method: 'post',
+          url: API.LOGIN,
+          headers : {
+            "Content-Type":'application/x-www-form-urlencoded; charset=UTF-8'
+          },
+          data: "username="+this.username+"&password="+pwd
         }).then(function (res) {
           console.log(res);
+          that.loading = false;
+          if(res.data.resultCode == 10000){
+            localStorage.setItem("userId",res.data.resultData.id);
+            localStorage.setItem("token",res.data.resultData.token);
+            location.href = "/index";
+          }else{
+            that.$message.error({
+              message: res.data.resultMessage,
+              center: true
+            });
+          }
         }).catch(function (res) {
           console.log(res);
-        })
+          that.loading = false;
+        });
       }
     }
   }

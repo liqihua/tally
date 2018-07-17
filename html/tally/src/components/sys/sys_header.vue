@@ -1,10 +1,12 @@
 <template>
-  <div class="div-sys-header">
+  <div class="div-sys-header" v-loading.fullscreen.lock="loading">
     <div class="div-input-wrap">
       <el-input v-model="total" class="input-total" type="number" placeholder="金额/元" ></el-input>
       <el-input v-model="productName" class="input-product-name" type="text" placeholder="商品名称" ></el-input>
-      <el-input v-model="productType" class="input-product-type" type="text" placeholder="商品分类" ></el-input>
-      <el-date-picker v-model="payTime" type="date" placeholder="消费时间"></el-date-picker>
+      <el-select v-model="productType" filterable placeholder="商品分类">
+        <el-option v-for="item in productTypeArr" :key="item.value" :label="item.label" :value="item.value"></el-option>
+      </el-select>
+      <el-date-picker v-model="payTime" type="date" placeholder="消费时间" value-format="yyyy-MM-dd"></el-date-picker>
       <el-button type="primary" icon="el-icon-success" @click="addLog()">save</el-button>
     </div>
   </div>
@@ -12,16 +14,39 @@
 
 
 <script>
-  import config from '@/config/config'
+  import API from '@/config/config';
   import axios from 'axios';
   export default {
     name: 'sys_header',
     data(){
       return {
+        loading:false,
         total:0,
         productName:'',
         productType:'',
-        payTime:''
+        payTime:'',
+        productTypeArr:[
+          {
+            label : '一日三餐',
+            value : '一日三餐'
+          },
+          {
+            label : '生活用品',
+            value : '生活用品'
+          },
+          {
+            label : '聚餐消费',
+            value : '聚餐消费'
+          },
+          {
+            label : '房屋租金',
+            value : '房屋租金'
+          },
+          {
+            label : '电子产品',
+            value : '电子产品'
+          },
+        ]
       }
     },
     methods: {
@@ -41,15 +66,38 @@
         if(this.payTime == null || this.payTime == ''){
           alert("消费时间不能为空");return;
         }
-        axios.post(API.SAVE_LOG_PAY,{
-          total:this.total,
-          productName:this.productName,
-          productType:this.productType,
-          payTime:this.payTime
-        }).then(function(res){
+        var userId = localStorage.getItem("userId");
+        var token = localStorage.getItem("token");
+        if(userId == null || userId == '' || token == null || token == ''){
+          location.href = "/";
+        }
+        var that = this;
+        that.loading = true;
+        axios({
+          method: 'post',
+          url: API.SAVE_LOG_PAY,
+          headers : {
+            "Content-Type":'application/x-www-form-urlencoded; charset=UTF-8'
+          },
+          data: "total="+this.total+"&productName="+this.productName+"&productType="+this.productType+"&payTime="+this.payTime+"&userId="+userId+"&token="+token
+        }).then(function (res) {
           console.log(res);
-        }).catch(function(res){
+          that.loading = false;
+          if(res.data.resultCode == 10000){
+            that.$message({
+              message:'保存成功',
+              center:true,
+              type:'success'
+            });
+          }else{
+            that.$message.error({
+              message: res.data.resultMessage,
+              center: true
+            });
+          }
+        }).catch(function (res) {
           console.log(res);
+          that.loading = false;
         });
       }
     }
