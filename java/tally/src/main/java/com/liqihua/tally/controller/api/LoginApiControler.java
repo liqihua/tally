@@ -50,7 +50,7 @@ public class LoginApiControler extends BaseController {
         List<TallyUser> list = userService.findList(_u);
         if(list != null && list.size()>0){
             String token = SecureUtil.md5(username+System.currentTimeMillis());
-            redisUtil.set("token_"+list.get(0).getId(), token);
+            redisUtil.set("token_"+list.get(0).getId(), token,48 * 60 * 60);
             DTOUser dto = userService.getDTO(list.get(0));
             dto.token = token;
             return buildSuccessInfo(dto);

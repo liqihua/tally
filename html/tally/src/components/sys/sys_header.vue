@@ -16,8 +16,11 @@
 <script>
   import API from '@/config/config';
   import axios from 'axios';
+  import store from '@/store/store.js';
+
   export default {
     name: 'sys_header',
+    store,
     data(){
       return {
         loading:false,
@@ -89,6 +92,7 @@
               center:true,
               type:'success'
             });
+            store.commit('doUpdateLogList');
           }else{
             that.$message.error({
               message: res.data.resultMessage,
