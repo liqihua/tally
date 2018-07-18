@@ -50,19 +50,25 @@ public class LogPayApiController extends BaseController {
                                                 @ApiParam(value = "payTime：yyyy-MM-dd",required = true) @RequestParam(value="payTime",required=true) String payTime){
 
         Long userId = Long.valueOf(_userId);
+        Date date = null;
+        try {
+            date = DateUtil.parse(payTime);
+        }catch(Exception e){
+            return buildFailedInfo(ApiConstance.PARAM_DATE_ERROR);
+        }
+
         TallyLogPay logPay = null;
         if(logId != null){
             logPay = logPayService.get(logId);
+            logPay.setTotal(total);
+            logPay.setProductName(productName);
+            logPay.setProductType(productType);
+            logPay.setPayTime(date);
             if(logPay == null){
                 return buildFailedInfo(ApiConstance.LOG_NOT_EXIST);
             }
         }else{
-            Date date = null;
-            try {
-                date = DateUtil.parse(payTime);
-            }catch(Exception e){
-                return buildFailedInfo(ApiConstance.PARAM_DATE_ERROR);
-            }
+
             logPay = new TallyLogPay(userId, total, productName, productType, date);
         }
         logPayService.save(logPay);
@@ -74,7 +80,7 @@ public class LogPayApiController extends BaseController {
     @ApiOperation(value = "删除记录")
     @RequestMapping(value = "/deleteLogPay", method = RequestMethod.POST)
     @ApiResponses({@ApiResponse(code = ApiConstance.BASE_SUCCESS_CODE, message = "成功", response = String.class)})
-    public ResponseEntity<BaseResult> deleteLogPay(@ApiParam(value = "logId",required = false) @RequestParam(value="logId",required=false) Long logId){
+    public ResponseEntity<BaseResult> deleteLogPay(@ApiParam(value = "logId",required = true) @RequestParam(value="logId",required=true) Long logId){
         TallyLogPay log = logPayService.get(logId);
         if(log == null){
             return buildFailedInfo(ApiConstance.LOG_NOT_EXIST);
