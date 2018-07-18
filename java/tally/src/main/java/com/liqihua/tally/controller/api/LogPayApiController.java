@@ -98,6 +98,7 @@ public class LogPayApiController extends BaseController {
                                                      @ApiParam(value = "payTimeEnd：yyyy-MM-dd",required = false) @RequestParam(value="payTimeEnd",required=false) String payTimeEnd){
         Long userId = Long.valueOf(_userId);
         TallyLogPay _log = new TallyLogPay();
+        _log.setOrderBy(" a.pay_time DESC");
         _log.setUserId(userId);
         _log.setProductName(productName);
         _log.setProductType(productType);
