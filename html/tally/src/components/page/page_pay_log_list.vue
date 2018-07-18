@@ -31,7 +31,7 @@
         <el-select v-model="edit_productType" filterable placeholder="商品分类">
           <el-option v-for="item in productTypeArr" :key="item.value" :label="item.label" :value="item.value"></el-option>
         </el-select><br><br>
-        <el-date-picker v-model="edit_payTime" type="date" placeholder="消费时间"></el-date-picker><br><br>
+        <el-date-picker v-model="edit_payTime" type="date" placeholder="消费时间" value-format="yyyy-MM-dd"></el-date-picker><br><br>
       </div>
       <div class="edit-dialog-footer">
         <el-button @click="centerDialogVisible = false">cancel</el-button>
@@ -237,7 +237,11 @@
         for(var i=0;i<res.data.resultData.list.length;i++){
           res.data.resultData.list[i].payTime = res.data.resultData.list[i].payTime.substring(0,10);
         }
+        for(var i=0;i<res.data.resultData.list.length;i++){
+          res.data.resultData.list[i].total = res.data.resultData.list[i].total / 100;
+        }
         that.tableData = res.data.resultData.list;
+        console.log(that.tableData);
         that.dataCount = res.data.resultData.count;
         that.page = res.data.resultData.page + 1;
       }else{
