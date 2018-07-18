@@ -82,7 +82,7 @@
           headers : {
             "Content-Type":'application/x-www-form-urlencoded; charset=UTF-8'
           },
-          data: "total="+this.total+"&productName="+this.productName+"&productType="+this.productType+"&payTime="+this.payTime+"&userId="+userId+"&token="+token
+          data: "total="+(parseInt(this.total*100))+"&productName="+this.productName+"&productType="+this.productType+"&payTime="+this.payTime+"&userId="+userId+"&token="+token
         }).then(function (res) {
           console.log(res);
           that.loading = false;
