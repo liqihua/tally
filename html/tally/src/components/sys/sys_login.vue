@@ -24,7 +24,7 @@ export default {
     }
   },
   methods: {
-    login:() => {
+    login(){
       if(this.username != null && this.username != '' && this.password != null && this.password != ''){
         var pwd = this.password;
         var shaObj = new jsSHA("SHA-1", "TEXT");

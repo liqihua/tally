@@ -65,7 +65,7 @@
       return {
         loading:false,
         page:1,
-        pageSize:5,
+        pageSize:10,
         centerDialogVisible: false,
         tableData: [],
         dataCount:0,
@@ -74,32 +74,7 @@
         edit_productName:'',
         edit_productType:'',
         edit_payTime:'',
-        productTypeArr:productType/*[
-          {
-            label : '一日三餐',
-            value : '一日三餐'
-          },
-          {
-            label : '生活用品',
-            value : '生活用品'
-          },
-          {
-            label : '聚餐消费',
-            value : '聚餐消费'
-          },
-          {
-            label : '房屋租金',
-            value : '房屋租金'
-          },
-          {
-            label : '电子产品',
-            value : '电子产品'
-          },
-          {
-            label : '衣服消费',
-            value : '衣服消费'
-          }
-        ]*/
+        productTypeArr:productType
       }
     },
     created:function(){
