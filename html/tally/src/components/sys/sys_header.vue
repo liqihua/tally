@@ -28,32 +28,7 @@
         productName:'',
         productType:'',
         payTime:'',
-        productTypeArr:productType/*[
-          {
-            label : '一日三餐',
-            value : '一日三餐'
-          },
-          {
-            label : '生活用品',
-            value : '生活用品'
-          },
-          {
-            label : '聚餐消费',
-            value : '聚餐消费'
-          },
-          {
-            label : '房屋租金',
-            value : '房屋租金'
-          },
-          {
-            label : '电子产品',
-            value : '电子产品'
-          },
-          {
-            label : '衣服消费',
-            value : '衣服消费'
-          }
-        ]*/
+        productTypeArr:productType
       }
     },
     methods: {
@@ -97,6 +72,10 @@
               type:'success'
             });
             store.commit('doUpdateLogList');
+            that.total = 0;
+            that.productName = '';
+            that.productType = '';
+            that.payTime = '';
           }else{
             that.$message.error({
               message: res.data.resultMessage,
