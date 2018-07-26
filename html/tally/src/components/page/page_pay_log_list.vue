@@ -44,7 +44,7 @@
 
 
 <script>
-  import API from '@/config/config';
+  import API,{productType} from '@/config/config';
   import axios from 'axios';
   import store from '@/store/store.js';
 
@@ -74,7 +74,7 @@
         edit_productName:'',
         edit_productType:'',
         edit_payTime:'',
-        productTypeArr:[
+        productTypeArr:productType/*[
           {
             label : '一日三餐',
             value : '一日三餐'
@@ -99,7 +99,7 @@
             label : '衣服消费',
             value : '衣服消费'
           }
-        ]
+        ]*/
       }
     },
     created:function(){

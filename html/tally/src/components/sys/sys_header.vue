@@ -14,7 +14,7 @@
 
 
 <script>
-  import API from '@/config/config';
+  import API,{productType} from '@/config/config';
   import axios from 'axios';
   import store from '@/store/store.js';
 
@@ -28,7 +28,7 @@
         productName:'',
         productType:'',
         payTime:'',
-        productTypeArr:[
+        productTypeArr:productType/*[
           {
             label : '一日三餐',
             value : '一日三餐'
@@ -53,7 +53,7 @@
             label : '衣服消费',
             value : '衣服消费'
           }
-        ]
+        ]*/
       }
     },
     methods: {
