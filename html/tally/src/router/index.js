@@ -7,12 +7,12 @@ export default new Router({
   mode:'history',
   routes: [
     {
-      path: '/',
+      path: '/login',
       name: 'login',
       component: () => import('@/components/sys/sys_login')
     },
     {
-      path: '/index',
+      path: '/',
       name: 'index',
       component: () => import('@/components/sys/sys_index'),
       children: [

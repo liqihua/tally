@@ -45,7 +45,7 @@ export default {
           if(res.data.resultCode == 10000){
             localStorage.setItem("userId",res.data.resultData.id);
             localStorage.setItem("token",res.data.resultData.token);
-            location.href = "/index";
+            location.href = "/";
           }else{
             that.$message.error({
               message: res.data.resultMessage,

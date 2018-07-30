@@ -51,7 +51,7 @@
         var userId = localStorage.getItem("userId");
         var token = localStorage.getItem("token");
         if(userId == null || userId == '' || token == null || token == ''){
-          location.href = "/";
+          location.href = "/login";
         }
         var that = this;
         that.loading = true;
