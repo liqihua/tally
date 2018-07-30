@@ -1,44 +1,62 @@
 <template>
   <div class="page-pay-log-list" v-loading.fullscreen.lock="loading">
 
-    <!-- tab -->
-    <el-tabs type="card">
-      <el-tab-pane label="支出记录"></el-tab-pane>
-    </el-tabs>
-
-    <!-- 列表 -->
-    <el-table :data="tableData" border style="width: 100%" >
-      <el-table-column prop="total" label="金额/元" width="180" align="center"></el-table-column>
-      <el-table-column prop="productName" label="商品名称" width="180" align="center"></el-table-column>
-      <el-table-column prop="productType" label="消费类型" align="center"></el-table-column>
-      <el-table-column prop="payTime" label="消费时间" align="center"></el-table-column>
-      <el-table-column label="操作" align="center" width="200">
-        <template slot-scope="scope">
-          <el-button type="primary" size="small" icon="el-icon-edit" @click="editLog(scope.row)">edit</el-button>
-          <el-button type="danger" size="small" icon="el-icon-delete" @click="deleteLog(scope.row)">delete</el-button>
-        </template>
-      </el-table-column>
-    </el-table>
-
-    <!-- 分页组件 -->
-    <el-pagination background layout="prev, pager, next" :total="dataCount" :page-size="pageSize" :current-page="page" @current-change="pageClick" ></el-pagination>
-
-    <!-- 编辑框弹出框 -->
-    <el-dialog title="edit log" :visible.sync="centerDialogVisible" width="300px" center>
-      <div class="edit-input-wrap">
-        <el-input v-model="edit_total" class="input-total" type="number" placeholder="金额/元"></el-input><br><br>
-        <el-input  v-model="edit_productName" class="input-product-name" type="text" placeholder="商品名称"></el-input><br><br>
-        <el-select v-model="edit_productType" filterable placeholder="商品分类">
+    <el-header>
+      <div class="div-input-wrap">
+        <el-input v-model="total" class="log-input input-total" type="number" placeholder="金额/元" :label-width="50"></el-input>
+        <el-input v-model="productName" class="log-input input-product-name" type="text" placeholder="商品名称" ></el-input>
+        <el-select v-model="productType" class="log-input" filterable placeholder="商品分类">
           <el-option v-for="item in productTypeArr" :key="item.value" :label="item.label" :value="item.value"></el-option>
-        </el-select><br><br>
-        <el-date-picker v-model="edit_payTime" type="date" placeholder="消费时间" value-format="yyyy-MM-dd"></el-date-picker><br><br>
+        </el-select>
+        <el-date-picker v-model="payTime" type="date" placeholder="消费时间" value-format="yyyy-MM-dd"></el-date-picker>
+        <el-button type="primary" icon="el-icon-success" @click="addLog()">save</el-button>
       </div>
-      <div class="edit-dialog-footer">
-        <el-button @click="centerDialogVisible = false">cancel</el-button>
-        <el-button type="primary" @click="doEdit()" icon="el-icon-success">save</el-button>
-      </div>
-    </el-dialog>
+    </el-header>
 
+
+    <el-main>
+
+
+      <!-- tab -->
+      <el-tabs type="card">
+        <el-tab-pane label="支出记录"></el-tab-pane>
+      </el-tabs>
+
+      <!-- 列表 -->
+      <el-table :data="tableData" border style="width: 100%" >
+        <el-table-column prop="total" label="金额/元" width="180" align="center"></el-table-column>
+        <el-table-column prop="productName" label="商品名称" width="180" align="center"></el-table-column>
+        <el-table-column prop="productType" label="消费类型" align="center"></el-table-column>
+        <el-table-column prop="payTime" label="消费时间" align="center"></el-table-column>
+        <el-table-column label="操作" align="center" width="200">
+          <template slot-scope="scope">
+            <el-button type="primary" size="small" icon="el-icon-edit" @click="editLog(scope.row)">edit</el-button>
+            <el-button type="danger" size="small" icon="el-icon-delete" @click="deleteLog(scope.row)">delete</el-button>
+          </template>
+        </el-table-column>
+      </el-table>
+
+      <!-- 分页组件 -->
+      <el-pagination background layout="prev, pager, next" :total="dataCount" :page-size="pageSize" :current-page="page" @current-change="pageClick" ></el-pagination>
+
+      <!-- 编辑框弹出框 -->
+      <el-dialog title="edit log" :visible.sync="centerDialogVisible" width="300px" center>
+        <div class="edit-input-wrap">
+          <el-input v-model="edit_total" class="input-total" type="number" placeholder="金额/元"></el-input><br><br>
+          <el-input  v-model="edit_productName" class="input-product-name" type="text" placeholder="商品名称"></el-input><br><br>
+          <el-select v-model="edit_productType" filterable placeholder="商品分类">
+            <el-option v-for="item in productTypeArr" :key="item.value" :label="item.label" :value="item.value"></el-option>
+          </el-select><br><br>
+          <el-date-picker v-model="edit_payTime" type="date" placeholder="消费时间" value-format="yyyy-MM-dd"></el-date-picker><br><br>
+        </div>
+        <div class="edit-dialog-footer">
+          <el-button @click="centerDialogVisible = false">cancel</el-button>
+          <el-button type="primary" @click="doEdit()" icon="el-icon-success">save</el-button>
+        </div>
+      </el-dialog>
+
+
+    </el-main>
   </div>
 </template>
 
@@ -46,23 +64,17 @@
 <script>
   import API,{productType} from '@/config/config';
   import axios from 'axios';
-  import store from '@/store/store.js';
 
   export default {
     name: 'address_list',
-    store,
-    computed:{
-      updateLogList(){
-        return this.$store.state.updateLogList;
-      }
-    },
-    watch:{
-      updateLogList:function(){
-        getList(this);
-      }
-    },
     data() {
       return {
+        total:0,
+        productName:'',
+        productType:'',
+        payTime:'',
+        productTypeArr:productType,
+
         loading:false,
         page:1,
         pageSize:10,
@@ -73,19 +85,21 @@
         edit_total:0,
         edit_productName:'',
         edit_productType:'',
-        edit_payTime:'',
-        productTypeArr:productType
+        edit_payTime:''
       }
     },
     created:function(){
       getList(this);
     },
     methods:{
-      pageClick(clickPage){
-        if(clickPage != this.page){
-          this.page = clickPage;
-          getList(this);
+      addLog(){
+        var data = {
+          total : this.total,
+          productName : this.productName,
+          productType : this.productType,
+          payTime : this.payTime
         }
+        this.saveLog(data);
       },
       editLog(log){
         console.log(log);
@@ -97,21 +111,36 @@
         this.edit_payTime = log.payTime;
       },
       doEdit(){
-        if(this.edit_total == null || this.edit_total == ''){
+        var data = {
+          logId : this.edit_id,
+          total : this.edit_total,
+          productName : this.edit_productName,
+          productType : this.edit_productType,
+          payTime : this.edit_payTime
+        }
+        this.saveLog(data);
+        this.centerDialogVisible = false;
+      },
+      saveLog(data){
+        if(data.total == null || data.total == ''){
           alert("金额不能为空");return;
         }
-        if(this.edit_total <= 0){
+        if(data.total <= 0){
           alert("金额必须大于0");return;
         }
-        if(this.edit_productName == null || this.edit_productName == ''){
+        if(data.productName == null || data.productName == ''){
           alert("商品名称不能为空");return;
         }
-        if(this.edit_productType == null || this.edit_productType == ''){
+        if(data.productType == null || data.productType == ''){
           alert("商品分类不能为空");return;
         }
-        if(this.edit_payTime == null || this.edit_payTime == ''){
+        if(data.payTime == null || data.payTime == ''){
           alert("消费时间不能为空");return;
         }
+        if(data.logId == null){
+          data.logId = '';
+        }
+
         var userId = localStorage.getItem("userId");
         var token = localStorage.getItem("token");
         if(userId == null || userId == '' || token == null || token == ''){
@@ -125,18 +154,21 @@
           headers : {
             "Content-Type":'application/x-www-form-urlencoded; charset=UTF-8'
           },
-          data: "logId="+this.edit_id+"&total="+(parseInt(this.edit_total*100))+"&productName="+this.edit_productName+"&productType="+this.edit_productType+"&payTime="+this.edit_payTime+"&userId="+userId+"&token="+token
+          data: "logId="+data.logId+"&total="+(parseInt(data.total*100))+"&productName="+data.productName+"&productType="+data.productType+"&payTime="+data.payTime+"&userId="+userId+"&token="+token
         }).then(function (res) {
           console.log(res);
           that.loading = false;
           if(res.data.resultCode == 10000){
-            that.centerDialogVisible = false;
             that.$message({
               message:'保存成功',
               center:true,
               type:'success'
             });
-            store.commit('doUpdateLogList');
+            getList(that);
+            that.total = 0;
+            that.productName = '';
+            that.productType = '';
+            that.payTime = '';
           }else{
             that.$message.error({
               message: res.data.resultMessage,
@@ -178,7 +210,7 @@
                 center:true,
                 type:'success'
               });
-              store.commit('doUpdateLogList');
+              getList(that);
             }else{
               that.$message.error({
                 message: res.data.resultMessage,
@@ -189,12 +221,13 @@
             console.log(res);
             that.loading = false;
           });
-
-          /*this.$message({
-            type: 'success',
-            message: '删除成功!'
-          });*/
         });
+      },
+      pageClick(clickPage){
+        if(clickPage != this.page){
+          this.page = clickPage;
+          getList(this);
+        }
       }
     }
   }
@@ -241,6 +274,11 @@
 
 
 <style scoped>
+  .page-pay-log-list{width: 100%;}
+  .el-header{margin-top: 20px;}
+  .div-input-wrap{width:100%;height:100%;}
+  .log-input{max-width: 200px;}
+
   .page-pay-log-list .el-table{ margin-top: 10px;}
   .page-pay-log-list .el-pagination{ margin-top: 20px;}
   .edit-input-wrap el-input{ max-width: 200px;}

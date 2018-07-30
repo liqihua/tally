@@ -5,12 +5,13 @@
         <sys_menu></sys_menu>
       </el-aside>
       <el-container>
-        <el-header>
+        <router-view></router-view>
+        <!--<el-header>
           <sys_header></sys_header>
         </el-header>
         <el-main>
           <router-view></router-view>
-        </el-main>
+        </el-main>-->
       </el-container>
     </el-container>
   </div>

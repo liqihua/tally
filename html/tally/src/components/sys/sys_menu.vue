@@ -1,13 +1,17 @@
 <template>
   <el-menu default-active="1"  background-color="#545c64" text-color="#fff" active-text-color="#ffd04b">
-    <el-menu-item index="1">
-      <i class="el-icon-tickets"></i>
-      <span slot="title">支出记录</span>
-    </el-menu-item>
-    <el-menu-item index="2">
-      <i class="el-icon-sort"></i>
-      <span slot="title">支出统计</span>
-    </el-menu-item>
+    <router-link to="/pay_log_list">
+      <el-menu-item index="1">
+        <i class="el-icon-tickets"></i>
+        <span slot="title">支出记录</span>
+      </el-menu-item>
+    </router-link>
+    <router-link to="/count">
+      <el-menu-item index="2">
+        <i class="el-icon-sort"></i>
+        <span slot="title">支出统计</span>
+      </el-menu-item>
+    </router-link>
 
   </el-menu>
 </template>

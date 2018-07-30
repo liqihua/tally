@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="page-count">
     <div id="main" style="width: 600px;height:400px;"></div>
   </div>
 </template>
@@ -9,8 +9,8 @@
 
   export default {
     name : 'count',
-    mounted : {
-
+    mounted(){
+      this.drawLine();
     },
     methods :{
       drawLine(){
@@ -40,9 +40,6 @@
         // 使用刚指定的配置项和数据显示图表。
         myChart.setOption(option);
       }
-    },
-    created : {
-
     }
   }
 </script>
