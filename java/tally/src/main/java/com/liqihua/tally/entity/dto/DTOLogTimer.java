@@ -6,19 +6,19 @@ import io.swagger.annotations.ApiModelProperty;
 import java.io.Serializable;
 import java.util.Date;
 
-@ApiModel("类型消费总额统计")
-public class DTOCountType implements Serializable{
+@ApiModel("timer运行日志表")
+public class DTOLogTimer implements Serializable{
 
 	private static final long serialVersionUID = 1L;
 	
 	@ApiModelProperty("id")
 	public Long id;
-	@ApiModelProperty("用户id")
-	public Long userId;
-	@ApiModelProperty("类型")
-	public String type;
-	@ApiModelProperty("总金额/分")
-	public Long total;
+	@ApiModelProperty("任务名称")
+	public String name;
+	@ApiModelProperty("开始时间")
+	public Date startTime;
+	@ApiModelProperty("完成时间")
+	public Date endTime;
 	@ApiModelProperty("更新时间")
 	public Date updateDate;
 	@ApiModelProperty("创建时间")
@@ -33,28 +33,29 @@ public class DTOCountType implements Serializable{
     public void setId(Long id) {
     	this.id = id;
     }
+    
 
-	public Long getUserId() {
-		return userId;
-	}
-
-	public void setUserId(Long userId) {
-		this.userId = userId;
-	}
-
-	public String getType() {
-    	return type;
+    public String getName() {
+    	return name;
     }
-    public void setType(String type) {
-    	this.type = type;
+    public void setName(String name) {
+    	this.name = name;
     }
     
 
-    public Long getTotal() {
-    	return total;
+    public Date getStartTime() {
+    	return startTime;
     }
-    public void setTotal(Long total) {
-    	this.total = total;
+    public void setStartTime(Date startTime) {
+    	this.startTime = startTime;
+    }
+    
+
+    public Date getEndTime() {
+    	return endTime;
+    }
+    public void setEndTime(Date endTime) {
+    	this.endTime = endTime;
     }
 	
 	public Date getUpdateDate() {

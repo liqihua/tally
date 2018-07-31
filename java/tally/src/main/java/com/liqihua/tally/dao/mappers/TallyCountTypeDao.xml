@@ -4,7 +4,8 @@
 <mapper namespace="com.liqihua.tally.dao.TallyCountTypeDao">
 
 	<sql id="tableColumns">
-			a.id AS "id",
+		a.id AS "id",
+		a.user_id AS "userId",
 		a.type AS "type",
 		a.total AS "total",
 		a.create_date AS "createDate",
@@ -74,6 +75,9 @@
     </select>
     
     <sql id="whereSQL">
+		<if test="userId != null and userId != ''">
+			AND a.user_id = #{userId}
+		</if>
 		<if test="type != null and type != ''">
     		AND a.type = #{type}
     	</if>
@@ -96,13 +100,15 @@
     
     <insert id="insert">
 		INSERT INTO tally_count_type(
-		    			id,
+		    id,
+			user_id,
 			type,
 			total,
 			create_date,
 			update_date
 		) VALUES (
-		            	#{id},
+		    #{id},
+		    #{userId},
         	#{type},
         	#{total},
         	#{createDate},
@@ -111,8 +117,9 @@
 	</insert>
 	
 	<update id="update">
-		UPDATE tally_count_type SET 	
-		    			type = #{type},
+		UPDATE tally_count_type SET
+			user_id = #{userId},
+		    type = #{type},
 			total = #{total},
 			create_date = #{createDate},
 			update_date = #{updateDate}

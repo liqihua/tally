@@ -5,7 +5,8 @@ import com.liqihua.core.basic.entity.BaseEntity;
 public class TallyCountType extends BaseEntity {
 	
 	private static final long serialVersionUID = 1L;
-	
+
+	private Long userId;//用户id
 	private String type;	//类型
 	private Long total;	//总金额/分
 	
@@ -13,9 +14,18 @@ public class TallyCountType extends BaseEntity {
 		super();
 	}
 
-	public TallyCountType(String type, Long total) {
+	public TallyCountType(Long userId, String type, Long total) {
+		this.userId = userId;
 		this.type = type;
 		this.total = total;
+	}
+
+	public Long getUserId() {
+		return userId;
+	}
+
+	public void setUserId(Long userId) {
+		this.userId = userId;
 	}
 
 	public String getType() {
