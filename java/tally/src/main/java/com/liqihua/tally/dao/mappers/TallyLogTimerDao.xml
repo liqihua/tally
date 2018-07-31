@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.liqihua.tally.dao.TallyLogTimerDao">
+
+	<sql id="tableColumns">
+			a.id AS "id",
+		a.name AS "name",
+		a.start_time AS "startTime",
+		a.end_time AS "endTime",
+		a.create_date AS "createDate",
+		a.update_date AS "updateDate"
+	</sql>
+	
+	<sql id="fromTable">
+		`tally_log_timer` a 
+	</sql>
+	
+	<select id="get" resultType="com.liqihua.tally.entity.TallyLogTimer">
+		SELECT 
+			<include refid="tableColumns"/>
+		FROM 
+			`tally_log_timer` a 
+		WHERE a.id = #{id}
+	</select>
+
+
+    <select id="getForUpdate" resultType="com.liqihua.tally.entity.TallyLogTimer">
+        SELECT
+        <include refid="tableColumns"/>
+        FROM
+        `tally_log_timer` a
+        WHERE a.id = #{id} FOR UPDATE
+    </select>
+
+	
+	<select id="getBy" resultType="com.liqihua.tally.entity.TallyLogTimer">
+		SELECT 
+			<include refid="tableColumns"/>
+		FROM 
+			`tally_log_timer` a 
+		WHERE a.${column} = #{value}
+	</select>
+	
+	<select id="fromTable" resultType="com.liqihua.tally.entity.TallyLogTimer">
+		SELECT 
+			<include refid="tableColumns"/>
+		FROM 
+			`tally_log_timer` a ${sql }
+	</select>
+	
+	<select id="findListSQL" resultType="java.util.HashMap">
+		${sql }
+	</select>
+	
+    <select id="findList" resultType="com.liqihua.tally.entity.TallyLogTimer">
+        SELECT 
+	        <include refid="tableColumns"/>
+        FROM 
+        	<include refid="fromTable"/>
+        <where>
+        	<include refid="whereSQL"/>
+        </where>
+        <choose>
+			<when test="orderBy != null and orderBy != ''">
+				ORDER BY ${orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.create_date DESC
+			</otherwise>
+		</choose>
+        <if test="first != null and max != null">
+			LIMIT #{first},#{max}
+		</if>
+    </select>
+    
+    <sql id="whereSQL">
+		<if test="name != null and name != ''">
+    		AND a.name = #{name}
+    	</if>
+		<if test="startTime != null ">
+    		AND a.start_time = #{startTime}
+    	</if>
+		<if test="endTime != null ">
+    		AND a.end_time = #{endTime}
+    	</if>
+		<if test="createDate != null ">
+    		AND a.create_date = #{createDate}
+    	</if>
+		<if test="updateDate != null ">
+    		AND a.update_date = #{updateDate}
+    	</if>
+	    <if test="createDateStart != null  and createDateEnd != null ">
+    		AND a.create_date BETWEEN #{createDateStart} AND #{createDateEnd}
+    	</if>
+    	<if test="updateDateStart != null  and updateDateEnd != null ">
+    		AND a.update_date BETWEEN #{updateDateStart} AND #{updateDateEnd}
+    	</if>
+    </sql>
+    
+    <insert id="insert">
+		INSERT INTO tally_log_timer(
+		    			id,
+			name,
+			start_time,
+			end_time,
+			create_date,
+			update_date
+		) VALUES (
+		            	#{id},
+        	#{name},
+        	#{startTime},
+        	#{endTime},
+        	#{createDate},
+        	#{updateDate}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE tally_log_timer SET 	
+		    			name = #{name},
+			start_time = #{startTime},
+			end_time = #{endTime},
+			create_date = #{createDate},
+			update_date = #{updateDate}
+		WHERE id = #{id}
+	</update>
+ 	
+ 	<update id="delete">
+		DELETE FROM tally_log_timer
+		WHERE id = #{id}
+	</update>
+	
+	<update id="exec">
+		${sql }
+	</update>
+	
+	<select id="getCount" resultType="Integer">
+		SELECT 
+			count(1) 
+		FROM 
+			<include refid="fromTable"/>
+		<where>
+			<include refid="whereSQL"/>
+		</where>
+	</select>
+    
+</mapper>
