@@ -6,8 +6,12 @@ import com.liqihua.core.constance.ApiConstance;
 import com.liqihua.core.utils.Tool;
 import com.liqihua.tally.commons.security.SysSecurity;
 import com.liqihua.tally.entity.TallyCountType;
+import com.liqihua.tally.entity.TallyUser;
 import com.liqihua.tally.service.TallyCountTypeService;
+import com.liqihua.tally.service.TallyUserService;
+import com.liqihua.tally.timer.TallyTimer;
 import io.swagger.annotations.*;
+import net.bytebuddy.asm.Advice;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -70,32 +74,7 @@ public class TestApiController extends BaseController {
     @ApiOperation(value = "统计A")
     @RequestMapping(value = "/countA", method = RequestMethod.GET)
     @ApiResponses({@ApiResponse(code = ApiConstance.BASE_SUCCESS_CODE, message = "成功", response = String.class)})
-    public ResponseEntity<BaseResult> countA(@ApiParam(value = "aa",required = true) @RequestParam(value="aa",required=false) String aa){
-        List<Map<String,Object>> list = countTypeService.findListSQL("SELECT DISTINCT(product_type) FROM tally_log_pay");
-        if(list != null && list.size() > 0){
-            for(Map<String,Object> map : list){
-                String productType = (String) map.get("product_type");
-                if(Tool.isNotBlank(productType)){
-                    String SQL = "SELECT COALESCE(SUM(total),0) AS total FROM tally_log_pay WHERE product_type='"+productType+"'";
-                    List<Map<String,Object>> totalList = countTypeService.findListSQL(SQL);
-                    BigDecimal total = (BigDecimal) totalList.get(0).get("total");
-                    if(total.compareTo(BigDecimal.ZERO) == 1){
-                        TallyCountType countLog = null;
-                        TallyCountType _type = new TallyCountType();
-                        _type.setType(productType);
-                        List<TallyCountType> countList = countTypeService.findList(_type);
-                        if(countList != null && countList.size() > 0){
-                            countLog = countList.get(0);
-                        }else{
-                            countLog = new TallyCountType();
-                            countLog.setType(productType);
-                        }
-                        countLog.setTotal(total.longValue());
-                        countTypeService.save(countLog);
-                    }
-                }
-            }
-        }
+    public ResponseEntity<BaseResult> countA(){
         return buildSuccessInfo(countTypeService.getDTOList(countTypeService.findList(null)));
     }
 }

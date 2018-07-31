@@ -41,5 +41,13 @@ public class TallyCountType extends BaseEntity {
     public void setTotal(Long total) {
     	this.total = total;
     }
-	
+
+	@Override
+	public String toString() {
+		return "TallyCountType{" +
+				"userId=" + userId +
+				", type='" + type + '\'' +
+				", total=" + total +
+				'}';
+	}
 }

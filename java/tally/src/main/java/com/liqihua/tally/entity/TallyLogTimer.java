@@ -16,8 +16,13 @@ public class TallyLogTimer extends BaseEntity {
 	public TallyLogTimer() {
 		super();
 	}
-	
-    
+
+    public TallyLogTimer(String name, Date startTime, Date endTime) {
+        this.name = name;
+        this.startTime = startTime;
+        this.endTime = endTime;
+    }
+
     public String getName() {
     	return name;
     }

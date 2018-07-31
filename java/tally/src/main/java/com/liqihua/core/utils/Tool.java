@@ -8,6 +8,8 @@ import org.springframework.util.ClassUtils;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /**
  * @author liqihua
@@ -122,5 +124,15 @@ public class Tool {
         return n1;
     }
 
+
+    public static String formatDate(Date date, String format){
+        SimpleDateFormat sf = null;
+        if(Tool.isBlank(format)){
+            sf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        }else{
+            sf = new SimpleDateFormat(format);
+        }
+        return sf.format(date);
+    }
 
 }
