@@ -16,19 +16,10 @@ export default new Router({
       name: 'index',
       component: () => import('@/components/sys/sys_index'),
       children: [
-        {path: '/',component:() => import('@/components/page/page_pay_log_list_new')},
-        {path: 'pay_log_list',component:() => import('@/components/page/page_pay_log_list_new')},
+        {path: '/',component:() => import('@/components/page/page_pay_log_list')},
+        {path: 'pay_log_list',component:() => import('@/components/page/page_pay_log_list')},
         {path: 'count',component:() => import('@/components/page/page_count')}
       ]
-    }/*,
-    {
-      path: '/',
-      name: 'index',
-      component: () => import('@/components/sys/sys_index'),
-      children: [
-        {path: '/',component:() => import('@/components/page/page_pay_log_list')},
-        {path: 'pay_log_list',component:() => import('@/components/page/page_pay_log_list')}
-      ]
-    }*/
+    }
   ]
 })
