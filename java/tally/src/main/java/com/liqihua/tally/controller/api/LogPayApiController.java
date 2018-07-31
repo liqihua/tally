@@ -43,13 +43,11 @@ public class LogPayApiController extends BaseController {
     @RequestMapping(value = "/saveLogPay", method = RequestMethod.POST)
     @ApiResponses({@ApiResponse(code = ApiConstance.BASE_SUCCESS_CODE, message = "成功", response = String.class)})
     public ResponseEntity<BaseResult> saveLogPay(@ApiParam(value = "logId",required = false) @RequestParam(value="logId",required=false) Long logId,
-                                                @ApiParam(value = "userId",required = true) @RequestParam(value="userId",required=true) Long _userId,
+                                                @ApiParam(value = "userId",required = true) @RequestParam(value="userId",required=true) Long userId,
                                                 @ApiParam(value = "total",required = true) @RequestParam(value="total",required=true) Long total,
                                                 @ApiParam(value = "productName",required = true) @RequestParam(value="productName",required=true) String productName,
                                                 @ApiParam(value = "productType",required = true) @RequestParam(value="productType",required=true) String productType,
                                                 @ApiParam(value = "payTime：yyyy-MM-dd",required = true) @RequestParam(value="payTime",required=true) String payTime){
-
-        Long userId = Long.valueOf(_userId);
         Date date = null;
         try {
             date = DateUtil.parse(payTime);

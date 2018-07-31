@@ -43,7 +43,7 @@ public class WebMvcConfig extends WebMvcConfigurationSupport {
 		//跨域拦截器
 		registry.addInterceptor(corsInterceptor()).addPathPatterns(corsArr);
 		//登录校验拦截器
-		registry.addInterceptor(loginInterceptor()).addPathPatterns("/api/logPayApiController/**");
+		registry.addInterceptor(loginInterceptor()).addPathPatterns("/api/logPayApiController/**","/api/countApiController/**");
 		//registry.addInterceptor(loginInterceptor()).addPathPatterns("/**").excludePathPatterns("/api_doc/**","/api/loginApiController/**","/api/testApiController/**");
 		super.addInterceptors(registry);
 	}

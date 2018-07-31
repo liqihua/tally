@@ -5,6 +5,7 @@ import com.liqihua.core.basic.controller.BaseController;
 import com.liqihua.core.basic.result.BaseResult;
 import com.liqihua.core.constance.ApiConstance;
 import com.liqihua.core.page.SysPage;
+import com.liqihua.tally.entity.TallyCountType;
 import com.liqihua.tally.entity.TallyLogPay;
 import com.liqihua.tally.entity.dto.DTOLogPay;
 import com.liqihua.tally.service.TallyCountTypeService;
@@ -20,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -37,12 +39,12 @@ public class CountApiController extends BaseController {
     @ApiOperation(value = "各类型总额")
     @RequestMapping(value = "/countType", method = RequestMethod.GET)
     @ApiResponses({@ApiResponse(code = ApiConstance.BASE_SUCCESS_CODE, message = "成功", response = String.class)})
-    public ResponseEntity<BaseResult> countType(@ApiParam(value = "userId",required = true) @RequestParam(value="userId",required=true) Long _userId,
-            @ApiParam(value = "aa",required = true) @RequestParam(value="aa",required=false) String aa){
-
-
-
-        return buildSuccessInfo(null);
+    public ResponseEntity<BaseResult> countType(@ApiParam(value = "userId",required = true) @RequestParam(value="userId",required=true) Long userId){
+        TallyCountType _count = new TallyCountType();
+        _count.setUserId(userId);
+        _count.setOrderBy(" a.total DESC ");
+        List<TallyCountType> list = countTypeService.findList(_count);
+        return buildSuccessInfo(countTypeService.getDTOList(list));
     }
 
 
