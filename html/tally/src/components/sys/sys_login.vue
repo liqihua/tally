@@ -13,6 +13,7 @@
 import API from '@/config/config';
 import axios from 'axios';
 const jsSHA = require("jssha");
+import {browser} from '@/js/common.js'
 
 export default {
   name: 'login',
@@ -21,6 +22,11 @@ export default {
       loading : false,
       username : '',
       password : ''
+    }
+  },
+  created:function(){
+    if(browser.versions.mobile){
+      location.href = "/wap/login";
     }
   },
   methods: {

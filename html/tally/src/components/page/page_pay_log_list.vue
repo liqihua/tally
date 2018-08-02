@@ -63,6 +63,7 @@
 
 <script>
   import API,{productType} from '@/config/config';
+  import {accMul,saveLog,getList} from '@/js/common.js';
   import axios from 'axios';
 
   export default {
@@ -99,10 +100,9 @@
           productType : this.productType,
           payTime : this.payTime
         }
-        this.saveLog(data);
+        saveLog(data,this);
       },
       editLog(log){
-        console.log(log);
         this.centerDialogVisible = true;
         this.edit_id = log.id;
         this.edit_total = log.total;
@@ -118,67 +118,11 @@
           productType : this.edit_productType,
           payTime : this.edit_payTime
         }
-        this.saveLog(data);
+        var success = saveLog(data,this);
+        if(success){
+          getList(this);
+        }
         this.centerDialogVisible = false;
-      },
-      saveLog(data){
-        if(data.total == null || data.total == ''){
-          alert("金额不能为空");return;
-        }
-        if(data.total <= 0){
-          alert("金额必须大于0");return;
-        }
-        if(data.productName == null || data.productName == ''){
-          alert("商品名称不能为空");return;
-        }
-        if(data.productType == null || data.productType == ''){
-          alert("商品分类不能为空");return;
-        }
-        if(data.payTime == null || data.payTime == ''){
-          alert("消费时间不能为空");return;
-        }
-        if(data.logId == null){
-          data.logId = '';
-        }
-
-        var userId = localStorage.getItem("userId");
-        var token = localStorage.getItem("token");
-        if(userId == null || userId == '' || token == null || token == ''){
-          location.href = "/login";
-        }
-        var that = this;
-        that.loading = true;
-        axios({
-          method: 'post',
-          url: API.SAVE_LOG_PAY,
-          headers : {
-            "Content-Type":'application/x-www-form-urlencoded; charset=UTF-8'
-          },
-          data: "logId="+data.logId+"&total="+(accMul(data.total,100))+"&productName="+data.productName+"&productType="+data.productType+"&payTime="+data.payTime+"&userId="+userId+"&token="+token
-        }).then(function (res) {
-          console.log(res);
-          that.loading = false;
-          if(res.data.resultCode == 10000){
-            that.$message({
-              message:'保存成功',
-              center:true,
-              type:'success'
-            });
-            getList(that);
-            that.total = 0;
-            that.productName = '';
-            that.productType = '';
-            that.payTime = '';
-          }else{
-            that.$message.error({
-              message: res.data.resultMessage,
-              center: true
-            });
-          }
-        }).catch(function (res) {
-          console.log(res);
-          that.loading = false;
-        });
       },
       deleteLog(log) {
         var userId = localStorage.getItem("userId");
@@ -233,65 +177,10 @@
   }
 
 
-  /**
-   * 获取记录列表
-   * @param that
-   */
-  function getList(that){
-    var userId = localStorage.getItem("userId");
-    var token = localStorage.getItem("token");
-    if(userId == null || userId == '' || token == null || token == ''){
-      location.href = "/login";
-    }
-    axios({
-      method: 'get',
-      url: API.GET_LOG_LIST+"?userId="+userId+"&token="+token+"&page="+(that.page - 1)+"&pageSize="+that.pageSize,
-    }).then(function (res) {
-      console.log(res);
-      that.loading = false;
-      if(res.data.resultCode == 10000){
-        for(var i=0;i<res.data.resultData.list.length;i++){
-          res.data.resultData.list[i].payTime = res.data.resultData.list[i].payTime.substring(0,10);
-        }
-        for(var i=0;i<res.data.resultData.list.length;i++){
-          res.data.resultData.list[i].total = res.data.resultData.list[i].total / 100;
-        }
-        that.tableData = res.data.resultData.list;
-        console.log(that.tableData);
-        that.dataCount = res.data.resultData.count;
-        that.page = res.data.resultData.page + 1;
-      }else{
-        if(res.data.resultCode == 42003){
-          location.href = "/login";
-        }
-        that.$message.error({
-          message: res.data.resultMessage,
-          center: true
-        });
-      }
-    }).catch(function (res) {
-      console.log(res);
-      that.loading = false;
-    });
-  }
 
 
-  /**
-   * 解决两个数相乘出现很多小数
-   * @param arg1
-   * @param arg2
-   * @returns {number}
-   */
-  function accMul(arg1,arg2){
-    var m=0,s1=arg1.toString(),s2=arg2.toString();
-    try{
-      m+=s1.split(".")[1].length;
-    }catch(e){}
-    try{
-      m+=s2.split(".")[1].length;
-    }catch(e){}
-    return Number(s1.replace(".",""))*Number(s2.replace(".",""))/Math.pow(10,m);
-  }
+
+
 
 </script>
 
