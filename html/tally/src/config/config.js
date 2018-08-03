@@ -51,6 +51,9 @@ const productType = [
   }
 ]
 
+const productTypePickerArr = ['一日三餐','运动健身','娱乐消费','聚餐消费','房屋租金','交通出行','生活用品','衣服鞋子','电子产品','医疗消费']
+
+
 export default API
-export {productType}
+export {productType,productTypePickerArr}
 

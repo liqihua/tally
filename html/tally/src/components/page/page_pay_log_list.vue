@@ -3,7 +3,7 @@
 
     <el-header>
       <div class="div-input-wrap">
-        <el-input v-model="total" class="log-input input-total" type="number" placeholder="金额/元" :label-width="50"></el-input>
+        <el-input v-model="total" class="log-input input-total" type="text" placeholder="金额/元"></el-input>
         <el-input v-model="productName" class="log-input input-product-name" type="text" placeholder="商品名称" ></el-input>
         <el-select v-model="productType" class="log-input" filterable placeholder="商品分类">
           <el-option v-for="item in productTypeArr" :key="item.value" :label="item.label" :value="item.value"></el-option>
@@ -70,7 +70,7 @@
     name: 'address_list',
     data() {
       return {
-        total:0,
+        total:'',
         productName:'',
         productType:'',
         payTime:'',
