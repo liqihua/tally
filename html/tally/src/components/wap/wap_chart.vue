@@ -1,7 +1,7 @@
 <template>
   <div id="wap_chart" v-loading.fullscreen.lock="loading">
-    <div id="chart-bar"></div>
     <div id="chart-pie"></div>
+    <div id="chart-bar"></div>
   </div>
 </template>
 
@@ -16,17 +16,13 @@
         loading : false
       }
     },
-    created:function () {
+    mounted:function () {
       $("#chart-bar").height($("#chart-bar").width()*2);
       $("#chart-pie").height($("#chart-bar").width()*2);
       drawLine(this);
     }
   }
 
-  $(function () {
-    $("#chart-bar").height($("#chart-bar").width()*2);
-    $("#chart-pie").height($("#chart-bar").width()*2);
-  });
 
 </script>
 

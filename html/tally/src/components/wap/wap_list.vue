@@ -55,7 +55,22 @@
   import API,{productType} from '@/config/config';
   import axios from 'axios';
   import {saveLog,getListWAP} from '@/js/common.js';
-  //import $ from 'jquery';
+  import $ from 'jquery';
+
+
+  $(function () {
+    $(window).scroll(function(){
+      let scrollTop = $(this).scrollTop();
+      let scrollHeight = $(document).height();
+      let windowHeight = $(this).height();
+      if(scrollTop + windowHeight === scrollHeight){
+        console.log(111);
+      }else{
+        console.log(222);
+      }
+
+    });
+  })
 
   export default {
     name: 'wap_list',
@@ -89,7 +104,7 @@
           alert(1);
         }
       });*/
-      /*$(window).scroll(function(){
+      $(window).scroll(function(){
         let scrollTop = $(this).scrollTop();
         let scrollHeight = $(document).height();
         let windowHeight = $(this).height();
@@ -98,8 +113,7 @@
         }else{
           console.log(222);
         }
-
-      });*/
+      });
 
     },
     methods:{

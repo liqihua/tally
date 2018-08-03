@@ -1,7 +1,7 @@
 <template>
   <div class="page-count" v-loading.fullscreen.lock="loading">
-    <div id="chart-bar" style="width: 1000px;height:600px;"></div>
     <div id="chart-pie" style="width: 1000px;height:600px;"></div>
+    <div id="chart-bar" style="width: 1000px;height:600px;"></div>
   </div>
 </template>
 
