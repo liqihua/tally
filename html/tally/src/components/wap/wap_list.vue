@@ -55,7 +55,7 @@
   import API,{productType} from '@/config/config';
   import axios from 'axios';
   import {saveLog,getListWAP} from '@/js/common.js';
-  import $ from 'jquery';
+  //import $ from 'jquery';
 
   export default {
     name: 'wap_list',

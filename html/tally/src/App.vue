@@ -5,8 +5,13 @@
 </template>
 
 <script>
+import Vconsole from 'vconsole';
+
 export default {
-  name: 'App'
+  name: 'App',
+  created:function () {
+    let vConsole = new Vconsole();
+  }
 }
 </script>
 

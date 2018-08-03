@@ -13,6 +13,7 @@ const login = (that,wap) => {
       url = "/wap"
     }
     that.loading = true;
+    console.log("--- starting login ");
     axios({
       method: 'post',
       url: API.LOGIN,
@@ -34,6 +35,7 @@ const login = (that,wap) => {
         });
       }
     }).catch(function (res) {
+      console.log("catch:");
       console.log(res);
       that.loading = false;
     });
