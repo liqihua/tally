@@ -114,7 +114,7 @@
           var userId = localStorage.getItem("userId");
           var token = localStorage.getItem("token");
           if(userId == null || userId == '' || token == null || token == ''){
-            location.href = "/wap/login";
+            this.$router.push("/wap/login");
           }
           var that = this;
           that.loading = true;

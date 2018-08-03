@@ -128,7 +128,7 @@
         var userId = localStorage.getItem("userId");
         var token = localStorage.getItem("token");
         if(userId == null || userId == '' || token == null || token == ''){
-          location.href = "/login";
+          this.$router.push("/login");
         }
         this.$confirm('此操作将永久删除该记录, 是否继续?', '提示', {
           confirmButtonText: '确定',

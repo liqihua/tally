@@ -25,7 +25,7 @@
         var userId = localStorage.getItem("userId");
         var token = localStorage.getItem("token");
         if(userId == null || userId == '' || token == null || token == ''){
-          location.href = "/login";
+          this.$router.push("/login");
         }
         var that = this;
         that.loading = true;
@@ -107,7 +107,7 @@
 
           }else{
             if(res.data.resultCode == 42003){
-              location.href = "/login";
+              this.$router.push("/login");
             }
             that.$message.error({
               message: res.data.resultMessage,

@@ -3,17 +3,29 @@
     <div class="sys-login-title">tally</div>
     <el-input v-model="username" type="text" placeholder="账号"></el-input>
     <el-input v-model="password" type="password" placeholder="密码"></el-input>
-    <el-button type="primary" >登录</el-button>
+    <el-button type="primary" @click="login()" >登录</el-button>
   </div>
 </template>
 
 <script>
+  import {browser,login} from '@/js/common.js'
+
   export default {
     name: 'wap_login',
     data() {
       return {
         username : "",
         password : ""
+      }
+    },
+    created:function(){
+      if(!browser.versions.mobile){
+        this.$router.push("/login");
+      }
+    },
+    methods: {
+      login(){
+        login(this,true);
       }
     }
   }

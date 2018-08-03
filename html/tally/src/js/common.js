@@ -1,5 +1,46 @@
 import API from '@/config/config';
 import axios from 'axios';
+const jsSHA = require("jssha");
+
+const login = (that,wap) => {
+  if(that.username != null && that.username != '' && that.password != null && that.password != ''){
+    var pwd = that.password;
+    var shaObj = new jsSHA("SHA-1", "TEXT");
+    shaObj.update(pwd);
+    pwd = shaObj.getHash("HEX");
+    var url = "/";
+    if(wap){
+      url = "/wap"
+    }
+    that.loading = true;
+    axios({
+      method: 'post',
+      url: API.LOGIN,
+      headers : {
+        "Content-Type":'application/x-www-form-urlencoded; charset=UTF-8'
+      },
+      data: "username="+that.username+"&password="+pwd
+    }).then(function (res) {
+      console.log(res);
+      that.loading = false;
+      if(res.data.resultCode == 10000){
+        localStorage.setItem("userId",res.data.resultData.id);
+        localStorage.setItem("token",res.data.resultData.token);
+        that.$router.push(url);
+      }else{
+        that.$message.error({
+          message: res.data.resultMessage,
+          center: true
+        });
+      }
+    }).catch(function (res) {
+      console.log(res);
+      that.loading = false;
+    });
+  }
+}
+
+
 
 /**
  * 解决两个数相乘出现很多小数
@@ -52,17 +93,17 @@ const saveLog = (data,that,loginUrl,wap,noList) => {
   var userId = localStorage.getItem("userId");
   var token = localStorage.getItem("token");
   if(userId == null || userId == '' || token == null || token == ''){
-    location.href = loginUrl;
+    that.$router.push(loginUrl);
   }
+  data.total = accMul(data.total,100);
   that.loading = true;
-  data.total = parseInt(data.total);
   axios({
     method: 'post',
     url: API.SAVE_LOG_PAY,
     headers : {
       "Content-Type":'application/x-www-form-urlencoded; charset=UTF-8'
     },
-    data: "logId="+data.logId+"&total="+(accMul(data.total,100))+"&productName="+data.productName+"&productType="+data.productType+"&payTime="+data.payTime+"&userId="+userId+"&token="+token
+    data: "logId="+data.logId+"&total="+data.total+"&productName="+data.productName+"&productType="+data.productType+"&payTime="+data.payTime+"&userId="+userId+"&token="+token
   }).then(function (res) {
     console.log(res);
     that.loading = false;
@@ -105,7 +146,7 @@ const getList = (that) => {
   var userId = localStorage.getItem("userId");
   var token = localStorage.getItem("token");
   if(userId == null || userId == '' || token == null || token == ''){
-    location.href = "/login";
+    that.$router.push("/login");
   }
   axios({
     method: 'get',
@@ -126,7 +167,7 @@ const getList = (that) => {
       that.page = res.data.resultData.page + 1;
     }else{
       if(res.data.resultCode == 42003){
-        location.href = "/login";
+        that.$router.push("/login");
       }
       that.$message.error({
         message: res.data.resultMessage,
@@ -148,7 +189,7 @@ function getListWAP(that){
   var userId = localStorage.getItem("userId");
   var token = localStorage.getItem("token");
   if(userId == null || userId == '' || token == null || token == ''){
-    location.href = "/login";
+    that.$router.push("/login");
   }
   that.loading = true;
   axios({
@@ -169,7 +210,7 @@ function getListWAP(that){
       that.page = res.data.resultData.page + 1;
     }else{
       if(res.data.resultCode == 42003){
-        location.href = "/login";
+        that.$router.push("/login");
       }
       that.$message.error({
         message: res.data.resultMessage,
@@ -209,4 +250,4 @@ var browser = {
 
 
 
-export {accMul,saveLog,getList,getListWAP,browser}
+export {accMul,saveLog,getList,getListWAP,browser,login}

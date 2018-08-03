@@ -10,10 +10,7 @@
 </template>
 
 <script>
-import API from '@/config/config';
-import axios from 'axios';
-const jsSHA = require("jssha");
-import {browser} from '@/js/common.js'
+import {browser,login} from '@/js/common.js'
 
 export default {
   name: 'login',
@@ -26,43 +23,12 @@ export default {
   },
   created:function(){
     if(browser.versions.mobile){
-      location.href = "/wap/login";
+      this.$router.push("/wap/login");
     }
   },
   methods: {
     login(){
-      if(this.username != null && this.username != '' && this.password != null && this.password != ''){
-        var pwd = this.password;
-        var shaObj = new jsSHA("SHA-1", "TEXT");
-        shaObj.update(pwd);
-        pwd = shaObj.getHash("HEX");
-        var that = this;
-        that.loading = true;
-        axios({
-          method: 'post',
-          url: API.LOGIN,
-          headers : {
-            "Content-Type":'application/x-www-form-urlencoded; charset=UTF-8'
-          },
-          data: "username="+this.username+"&password="+pwd
-        }).then(function (res) {
-          console.log(res);
-          that.loading = false;
-          if(res.data.resultCode == 10000){
-            localStorage.setItem("userId",res.data.resultData.id);
-            localStorage.setItem("token",res.data.resultData.token);
-            location.href = "/";
-          }else{
-            that.$message.error({
-              message: res.data.resultMessage,
-              center: true
-            });
-          }
-        }).catch(function (res) {
-          console.log(res);
-          that.loading = false;
-        });
-      }
+      login(this);
     }
   }
 }
