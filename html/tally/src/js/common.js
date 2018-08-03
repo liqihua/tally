@@ -391,4 +391,5 @@ var isDouble = (s) => {
 }
 
 
+
 export {accMul,saveLog,getList,getListWAP,browser,login,drawLine}

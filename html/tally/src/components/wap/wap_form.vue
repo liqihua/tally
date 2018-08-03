@@ -63,12 +63,11 @@
       this.startDate = new Date();
       this.endDate = new Date();
       this.startDate.setTime(date.getTime()-(365*24*60*60*1000));
-      this.endDate.setTime(date.getTime()+(365*24*60*60*1000))
+      this.endDate.setTime(date.getTime()+(365*24*60*60*1000));
     }
   }
 
-  Date.prototype.format = function(format)
-  {
+  Date.prototype.format = function(format){
     var o = {
       "M+" : this.getMonth()+1, //month
       "d+" : this.getDate(),    //day
@@ -86,6 +85,7 @@
           ("00"+ o[k]).substr((""+ o[k]).length));
     return format;
   }
+
 </script>
 
 <style scoped>

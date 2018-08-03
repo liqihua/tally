@@ -48,6 +48,7 @@
       </div>
     </el-dialog>
 
+
   </div>
 </template>
 
@@ -114,9 +115,14 @@
           console.log(222);
         }
       });
-
     },
     methods:{
+      openDatePicker(){
+        this.$refs.datePicker.open();
+      },
+      datePickerConfirm(){
+        this.payTime = this.payTimePicker.format('yyyy-MM-dd');
+      },
       showDeleteDialog(log){
         this.deleteId = log.id;
         this.dialogDeleteVisible = true;

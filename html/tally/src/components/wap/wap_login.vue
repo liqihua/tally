@@ -1,5 +1,5 @@
 <template>
-  <div id="wap_login">
+  <div id="wap_login" v-loading.fullscreen.lock="loading">
     <div class="sys-login-title">tally</div>
     <el-input v-model="username" type="text" placeholder="账号"></el-input>
     <el-input v-model="password" type="password" placeholder="密码"></el-input>
@@ -14,6 +14,7 @@
     name: 'wap_login',
     data() {
       return {
+        loading : false,
         username : "",
         password : ""
       }
