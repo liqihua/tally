@@ -152,7 +152,7 @@ const saveLog = (data,that,loginUrl,wap,noList) => {
           getList(that);
         }
       }
-      that.total = 0;
+      that.total = '';
       that.productName = '';
       that.productType = '';
       that.payTime = '';
