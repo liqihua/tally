@@ -56,22 +56,7 @@
   import API,{productType} from '@/config/config';
   import axios from 'axios';
   import {saveLog,getListWAP} from '@/js/common.js';
-  import $ from 'jquery';
-
-
-  $(function () {
-    $(window).scroll(function(){
-      let scrollTop = $(this).scrollTop();
-      let scrollHeight = $(document).height();
-      let windowHeight = $(this).height();
-      if(scrollTop + windowHeight === scrollHeight){
-        console.log(111);
-      }else{
-        console.log(222);
-      }
-
-    });
-  })
+  //import $ from 'jquery';
 
   export default {
     name: 'wap_list',
@@ -99,22 +84,15 @@
     },
     created:function(){
       getListWAP(this);
-      //判断滚动条是否滚动到底部
-      /*window.addEventListener('scroll',function(){
-        if(document.body.scrollTop + window.innerHeight >= document.body.offsetHeight) {
-          alert(1);
+      /*window.addEventListener('scroll', function () {
+        var documentHeight = $(document).height();		//文档的高度
+        var scrollHeight = $(window).scrollTop();		//卷去的高度
+        var visualHeight = document.body.offsetHeight;	//可视区域的高度
+        // 如果整个文档的高度 - 卷去的高度 <= 可视区域的高度，返回true
+        if((documentHeight-scrollHeight) <= visualHeight){
+          console.log(documentHeight,scrollHeight,visualHeight);
         }
-      });*/
-      $(window).scroll(function(){
-        let scrollTop = $(this).scrollTop();
-        let scrollHeight = $(document).height();
-        let windowHeight = $(this).height();
-        if(scrollTop + windowHeight === scrollHeight){
-          console.log(111);
-        }else{
-          console.log(222);
-        }
-      });
+      },true);*/
     },
     methods:{
       openDatePicker(){
@@ -186,8 +164,7 @@
         }
         saveLog(data,this,"/wap/login",true);
         this.dialogEditVisible = false;
-      },
-
+      }
     }
   }
 
