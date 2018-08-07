@@ -90,7 +90,7 @@
         var visualHeight = document.body.offsetHeight;	//可视区域的高度
         // 如果整个文档的高度 - 卷去的高度 <= 可视区域的高度，返回true
         if((documentHeight-scrollHeight) <= visualHeight){
-          console.log(documentHeight,scrollHeight,visualHeight);
+          console.log(documentHeight,scrollHeight,visualHeight,$("#wap_list").height());
         }
       },true);*/
     },
