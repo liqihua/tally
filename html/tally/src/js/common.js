@@ -156,7 +156,7 @@ const saveLog = (data,that,loginUrl,wap,noList) => {
       that.productName = '';
       that.productType = '';
       that.payTime = '';
-    }if(res.data.resultCode == 42003){
+    }else if(res.data.resultCode == 42003){
       that.$router.push("/login");
     }else{
       that.$message.error({
