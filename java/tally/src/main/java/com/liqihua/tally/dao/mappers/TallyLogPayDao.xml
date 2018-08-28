@@ -10,6 +10,7 @@
 		a.product_name AS "productName",
 		a.product_type AS "productType",
 		a.pay_time AS "payTime",
+		a.rank AS "rank",
 		a.create_date AS "createDate",
 		a.update_date AS "updateDate"
 	</sql>
@@ -111,21 +112,23 @@
     
     <insert id="insert">
 		INSERT INTO tally_log_pay(
-		    			id,
+		    id,
 			user_id,
 			total,
 			product_name,
 			product_type,
 			pay_time,
+			rank,
 			create_date,
 			update_date
 		) VALUES (
-		            	#{id},
+		    #{id},
         	#{userId},
         	#{total},
         	#{productName},
         	#{productType},
         	#{payTime},
+        	#{rank},
         	#{createDate},
         	#{updateDate}
 		)
@@ -133,11 +136,12 @@
 	
 	<update id="update">
 		UPDATE tally_log_pay SET 	
-		    			user_id = #{userId},
+		    user_id = #{userId},
 			total = #{total},
 			product_name = #{productName},
 			product_type = #{productType},
 			pay_time = #{payTime},
+			rank = #{rank},
 			create_date = #{createDate},
 			update_date = #{updateDate}
 		WHERE id = #{id}

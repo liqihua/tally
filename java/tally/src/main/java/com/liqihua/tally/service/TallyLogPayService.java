@@ -4,6 +4,7 @@ import com.liqihua.core.basic.service.IBaseService;
 import com.liqihua.tally.entity.TallyLogPay;
 import com.liqihua.tally.entity.dto.DTOLogPay;
 
+import java.util.Date;
 import java.util.List;
 
 public interface TallyLogPayService extends IBaseService<TallyLogPay> {
@@ -13,6 +14,6 @@ public interface TallyLogPayService extends IBaseService<TallyLogPay> {
 
     public List<DTOLogPay> getDTOList(List<TallyLogPay> entityList);
 
-
+    public Integer getMaxRankByPayTime(Date payTime);
 
 }

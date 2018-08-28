@@ -5,12 +5,14 @@ import com.liqihua.tally.dao.TallyLogPayDao;
 import com.liqihua.tally.entity.TallyLogPay;
 import com.liqihua.tally.entity.dto.DTOLogPay;
 import com.liqihua.tally.service.TallyLogPayService;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 
@@ -42,5 +44,11 @@ public class TallyLogPayServiceImpl extends BaseServiceImpl<TallyLogPayDao,Tally
         }
         return list;
     }
+
+
+    @Override
+	public Integer getMaxRankByPayTime(Date payTime){
+		return dao.getMaxRankByPayTime(payTime);
+	}
 
 }

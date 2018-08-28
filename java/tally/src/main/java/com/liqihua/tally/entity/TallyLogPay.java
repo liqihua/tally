@@ -14,6 +14,7 @@ public class TallyLogPay extends BaseEntity {
 	private String productName;	//商品名称
 	private String productType;	//商品类型
 	private Date payTime;	//消费时间
+    private Integer rank;
 
 
     //查询条件
@@ -60,12 +61,19 @@ public class TallyLogPay extends BaseEntity {
     	this.productType = productType;
     }
     
-    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    //@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     public Date getPayTime() {
     	return payTime;
     }
     public void setPayTime(Date payTime) {
     	this.payTime = payTime;
     }
-	
+
+    public Integer getRank() {
+        return rank;
+    }
+
+    public void setRank(Integer rank) {
+        this.rank = rank;
+    }
 }

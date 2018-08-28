@@ -66,8 +66,8 @@ public class LogPayApiController extends BaseController {
                 return buildFailedInfo(ApiConstance.LOG_NOT_EXIST);
             }
         }else{
-
             logPay = new TallyLogPay(userId, total, productName, productType, date);
+            logPay.setRank(logPayService.getMaxRankByPayTime(date)+1);
         }
         logPayService.save(logPay);
         DTOLogPay dto = logPayService.getDTO(logPay);
@@ -102,7 +102,7 @@ public class LogPayApiController extends BaseController {
                                                      @ApiParam(value = "payTimeEnd：yyyy-MM-dd",required = false) @RequestParam(value="payTimeEnd",required=false) String payTimeEnd){
         Long userId = Long.valueOf(_userId);
         TallyLogPay _log = new TallyLogPay();
-        _log.setOrderBy(" a.pay_time DESC");
+        _log.setOrderBy(" a.pay_time DESC,a.rank DESC");
         _log.setUserId(userId);
         _log.setProductName(productName);
         _log.setProductType(productType);
